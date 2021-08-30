@@ -11,7 +11,10 @@ spring:
                 uri: lb://microservicio-usuarios
                 predicates: Path=/api/alumnos/**
                 filters: StripPrefix=2
-
+            -   id: microservicio-cursos
+                uri: lb://microservicio-cursos
+                predicates: Path=/api/cursos/**
+                filters: StripPrefix=2
 eureka:
     client:
         service-url:

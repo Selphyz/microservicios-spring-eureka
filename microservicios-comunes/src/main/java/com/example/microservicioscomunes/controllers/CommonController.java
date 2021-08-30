@@ -19,7 +19,7 @@ public class CommonController<E, S extends CommonService<E>> {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> listarUno(@PathVariable Long id){
+    public ResponseEntity<?> listarUno(@PathVariable("id") Long id){
         Optional<E> a = service.findById(id);
         if(a.isEmpty()){
             return ResponseEntity.notFound().build();

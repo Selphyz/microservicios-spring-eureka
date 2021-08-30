@@ -1,13 +1,10 @@
 package com.example.microserviciosusuarios.services;
 
+import com.example.microservicioscommonentities.models.entity.Alumno;
 import com.example.microservicioscomunes.services.CommonService;
-import com.example.microserviciosusuarios.models.entity.Alumno;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface AlumnoService extends CommonService<Alumno> {
-    public Iterable<Alumno> findAll();
-    public Optional<Alumno> findById(Long id);
-    public Alumno save(Alumno alumno);
-    public void deleteById(Long id);
+    public List<Alumno> findByNombreOrApellido(String term);
 }
