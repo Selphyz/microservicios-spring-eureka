@@ -1,4 +1,4 @@
-package com.example.microserviciosaxemenes.models.entities;
+package com.example.microservicioscommonentities.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -23,7 +23,7 @@ public class Examen {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="create_at")
-    private Date createAt;
+    private Date createdAt;
 
     @JsonIgnoreProperties(value = {"examen"}, allowSetters = true)
     @OneToMany(mappedBy = "examen", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -35,7 +35,7 @@ public class Examen {
 
     @PrePersist
     public void prePersist() {
-        this.createAt = new Date();
+        this.createdAt = new Date();
     }
 
     public void setPreguntas(List<Pregunta> preguntas) {
@@ -71,11 +71,11 @@ public class Examen {
     }
 
     public Date getCreateAt() {
-        return createAt;
+        return createdAt;
     }
 
     public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
+        this.createdAt = createAt;
     }
 
     public List<Pregunta> getPreguntas() {

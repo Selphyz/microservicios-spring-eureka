@@ -1,15 +1,12 @@
 package com.example.microserviciosaxemenes.controllers;
 
-import com.example.microserviciosaxemenes.models.entities.Examen;
-import com.example.microserviciosaxemenes.models.entities.Pregunta;
 import com.example.microserviciosaxemenes.services.ExamenService;
+import com.example.microservicioscommonentities.models.entity.Examen;
+import com.example.microservicioscommonentities.models.entity.Pregunta;
 import com.example.microservicioscomunes.controllers.CommonController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -35,5 +32,9 @@ public class ExamenController extends CommonController<Examen, ExamenService> {
         eliminadas.forEach(examenDb::removePregunta);
         examenDb.setPreguntas(examen.getPreguntas());
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(examenDb));
+    }
+    @GetMapping("/filtrar/{term}")
+    public ResponseEntity<?> filtrar(@PathVariable String term){
+        return ResponseEntity.ok(service.findByNombre(term));
     }
 }

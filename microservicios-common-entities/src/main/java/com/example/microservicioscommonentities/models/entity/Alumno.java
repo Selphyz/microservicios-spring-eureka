@@ -18,7 +18,7 @@ public class Alumno {
     private Date createdAt;
 
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
         this.createdAt = new Date();
     }
 

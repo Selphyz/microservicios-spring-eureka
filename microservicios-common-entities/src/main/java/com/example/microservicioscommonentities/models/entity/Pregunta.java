@@ -1,4 +1,4 @@
-package com.example.microserviciosaxemenes.models.entities;
+package com.example.microservicioscommonentities.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
