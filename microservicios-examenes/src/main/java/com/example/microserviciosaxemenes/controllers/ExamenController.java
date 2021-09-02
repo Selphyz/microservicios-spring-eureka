@@ -37,4 +37,8 @@ public class ExamenController extends CommonController<Examen, ExamenService> {
     public ResponseEntity<?> filtrar(@PathVariable String term){
         return ResponseEntity.ok(service.findByNombre(term));
     }
+    @GetMapping("/asignaturas")
+    public ResponseEntity<?> listAsignaturas(){
+        return ResponseEntity.ok(service.findAllAsignaturas());
+    }
 }

@@ -22,12 +22,15 @@ public class Examen {
     private String nombre;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="create_at")
+    @Column(name="created_at")
     private Date createdAt;
 
     @JsonIgnoreProperties(value = {"examen"}, allowSetters = true)
     @OneToMany(mappedBy = "examen", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pregunta> preguntas;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Asignatura asignatura;
 
     public Examen() {
         this.preguntas = new ArrayList<>();
@@ -70,16 +73,24 @@ public class Examen {
         this.nombre = nombre;
     }
 
-    public Date getCreateAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreateAt(Date createAt) {
+    public void setCreatedAt(Date createAt) {
         this.createdAt = createAt;
     }
 
     public List<Pregunta> getPreguntas() {
         return preguntas;
+    }
+
+    public Asignatura getAsignatura() {
+        return asignatura;
+    }
+
+    public void setAsignatura(Asignatura asignatura) {
+        this.asignatura = asignatura;
     }
 
     @Override
