@@ -7,17 +7,20 @@ import com.example.microservicioscursos.models.entity.Curso;
 import com.example.microservicioscursos.service.CursoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 public class CursoController extends CommonController<Curso, CursoService> {
     @PutMapping("/{id}")
-    public ResponseEntity<?> editar(@RequestBody Curso curso, @PathVariable Long id){
+    public ResponseEntity<?> editar(@Valid @RequestBody Curso curso, BindingResult result, @PathVariable Long id){
+        if(result.hasErrors()){return this.validar(result);}
         Optional<Curso> o = this.service.findById(id);
-        if(!o.isPresent()){
+        if(o.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         Curso dbCurso = o.get();
@@ -27,7 +30,7 @@ public class CursoController extends CommonController<Curso, CursoService> {
     @PutMapping("/{id}/asignar-alumnos")
     public ResponseEntity<?> asignarAlumnos(@RequestBody List<Alumno> alumnos, @PathVariable Long id){
         Optional<Curso> o = this.service.findById(id);
-        if(!o.isPresent()){
+        if(o.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         Curso dbCurso = o.get();

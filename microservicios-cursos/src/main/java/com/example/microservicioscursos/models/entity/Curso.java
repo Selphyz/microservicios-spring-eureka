@@ -4,6 +4,7 @@ import com.example.microservicioscommonentities.models.entity.Alumno;
 import com.example.microservicioscommonentities.models.entity.Examen;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +15,7 @@ public class Curso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty
     private String nombre;
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)

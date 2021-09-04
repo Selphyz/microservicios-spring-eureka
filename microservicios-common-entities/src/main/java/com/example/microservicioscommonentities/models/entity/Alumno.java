@@ -1,6 +1,10 @@
 package com.example.microservicioscommonentities.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 @Entity
@@ -9,9 +13,20 @@ public class Alumno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotEmpty
     private String nombre;
+
+    @NotEmpty
     private String apellido;
+
+    @NotEmpty
+    @Email
     private String email;
+
+    @Lob
+    @JsonIgnore
+    private byte[] foto;
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
@@ -20,6 +35,10 @@ public class Alumno {
     @PrePersist
     public void prePersist() {
         this.createdAt = new Date();
+    }
+
+    public Integer getFotoHashCode(){
+        return (this.foto != null)? this.foto.hashCode():null;
     }
 
     public Long getId() {
@@ -52,6 +71,14 @@ public class Alumno {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
     }
 
     public Date getCreatedAt() {

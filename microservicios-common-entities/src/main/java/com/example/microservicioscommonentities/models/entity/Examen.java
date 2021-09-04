@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,8 +30,12 @@ public class Examen {
     @OneToMany(mappedBy = "examen", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pregunta> preguntas;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
     private Asignatura asignatura;
+
+    @Transient
+    private boolean respondido;
 
     public Examen() {
         this.preguntas = new ArrayList<>();
@@ -39,22 +44,6 @@ public class Examen {
     @PrePersist
     public void prePersist() {
         this.createdAt = new Date();
-    }
-
-    public void setPreguntas(List<Pregunta> preguntas) {
-        this.preguntas.clear();
-        preguntas.forEach(this::addPregunta);
-
-    }
-
-    public void addPregunta(Pregunta pregunta) {
-        this.preguntas.add(pregunta);
-        pregunta.setExamen(this);
-    }
-
-    public void removePregunta(Pregunta pregunta) {
-        this.preguntas.remove(pregunta);
-        pregunta.setExamen(null);
     }
 
     public Long getId() {
@@ -73,16 +62,32 @@ public class Examen {
         this.nombre = nombre;
     }
 
-    public Date getCreatedAt() {
+    public Date getCreateAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createAt) {
+    public void setCreateAt(Date createAt) {
         this.createdAt = createAt;
     }
 
     public List<Pregunta> getPreguntas() {
         return preguntas;
+    }
+
+    public void setPreguntas(List<Pregunta> preguntas) {
+        this.preguntas.clear();
+        preguntas.forEach(this::addPregunta);
+
+    }
+
+    public void addPregunta(Pregunta pregunta) {
+        this.preguntas.add(pregunta);
+        pregunta.setExamen(this);
+    }
+
+    public void removePregunta(Pregunta pregunta) {
+        this.preguntas.remove(pregunta);
+        pregunta.setExamen(null);
     }
 
     public Asignatura getAsignatura() {
@@ -91,6 +96,14 @@ public class Examen {
 
     public void setAsignatura(Asignatura asignatura) {
         this.asignatura = asignatura;
+    }
+
+    public boolean isRespondido() {
+        return respondido;
+    }
+
+    public void setRespondido(boolean respondido) {
+        this.respondido = respondido;
     }
 
     @Override
@@ -107,4 +120,6 @@ public class Examen {
 
         return this.id != null && this.id.equals(a.getId());
     }
+
+
 }
