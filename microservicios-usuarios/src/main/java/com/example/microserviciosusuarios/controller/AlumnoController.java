@@ -1,7 +1,8 @@
 package com.example.microserviciosusuarios.controller;
 
-import com.example.microservicioscommonentities.models.entity.Alumno;
+
 import com.example.microservicioscomunes.controllers.CommonController;
+import com.example.microserviciosusuarios.models.entity.Alumno;
 import com.example.microserviciosusuarios.services.AlumnoService;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;

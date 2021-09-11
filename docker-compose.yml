@@ -1,5 +1,9 @@
 version: "3.7"
 
+networks:
+  app-tier:
+    driver: bridge
+
 services: 
   mariadb:
     image: mariadb
@@ -10,3 +14,18 @@ services:
       - 3306:3306
     volumes:
       - ./data:/var/lib/mysql
+    networks:
+      - app-tier
+
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgres
+    networks: 
+      - app-tier

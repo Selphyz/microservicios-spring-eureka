@@ -120,6 +120,4 @@ public class Examen {
 
         return this.id != null && this.id.equals(a.getId());
     }
-
-
 }

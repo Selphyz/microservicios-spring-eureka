@@ -1,7 +1,8 @@
 package com.example.microservicioscursos.models.entity;
 
-import com.example.microservicioscommonentities.models.entity.Alumno;
+import com.example.microserviciosusuarios.models.entity.Alumno;
 import com.example.microservicioscommonentities.models.entity.Examen;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -15,13 +16,20 @@ public class Curso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotEmpty
     private String nombre;
+
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"curso"}, allowSetters = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CursoAlumno> cursoAlumnos;
+
+//    @OneToMany(fetch = FetchType.LAZY)
+    @Transient
     private List<Alumno> alumnos;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -35,6 +43,7 @@ public class Curso {
     public Curso() {
         this.alumnos = new ArrayList<>();
         this.examenes = new ArrayList<>();
+        this.cursoAlumnos = new ArrayList<>();
     }
 
     public List<Alumno> getAlumnos() {
@@ -69,6 +78,22 @@ public class Curso {
         this.alumnos.remove(alumno);
     }
 
+    public List<CursoAlumno> getCursoAlumnos() {
+        return cursoAlumnos;
+    }
+
+    public void setCursoAlumnos(List<CursoAlumno> cursoAlumnos) {
+        this.cursoAlumnos = cursoAlumnos;
+    }
+
+    public void addCursoAlumno(CursoAlumno cursoALumno) {
+        this.cursoAlumnos.add(cursoALumno);
+    }
+
+    public void removeCursoAlumno(CursoAlumno cursoALumno) {
+        this.cursoAlumnos.remove(cursoALumno);
+    }
+
     public Long getId() {
         return id;
     }
@@ -92,4 +117,5 @@ public class Curso {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
+
 }

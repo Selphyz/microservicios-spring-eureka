@@ -1,6 +1,6 @@
 package com.example.microservicioscursos.controller;
 
-import com.example.microservicioscommonentities.models.entity.Alumno;
+import com.example.microserviciosusuarios.models.entity.Alumno;
 import com.example.microservicioscommonentities.models.entity.Examen;
 import com.example.microservicioscomunes.controllers.CommonController;
 import com.example.microservicioscursos.models.entity.Curso;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class CursoController extends CommonController<Curso, CursoService> {
@@ -43,7 +44,7 @@ public class CursoController extends CommonController<Curso, CursoService> {
     @PutMapping("/{id}/eliminar-alumno")
     public ResponseEntity<?> eliminarAlumno(@RequestBody Alumno alumno, @PathVariable Long id){
         Optional<Curso> o = this.service.findById(id);
-        if(!o.isPresent()){
+        if(o.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         Curso dbCurso = o.get();
@@ -53,7 +54,7 @@ public class CursoController extends CommonController<Curso, CursoService> {
     @PutMapping("/{id}/asignar-examenes")
     public ResponseEntity<?> asignarExanenes(@RequestBody List<Examen> examen, @PathVariable Long id){
         Optional<Curso> o = this.service.findById(id);
-        if(!o.isPresent()){
+        if(o.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         Curso dbCurso = o.get();
@@ -66,7 +67,7 @@ public class CursoController extends CommonController<Curso, CursoService> {
     @PutMapping("/{id}/eliminar-examen")
     public ResponseEntity<?> eliminarExamen(@RequestBody Examen examen, @PathVariable Long id){
         Optional<Curso> o = this.service.findById(id);
-        if(!o.isPresent()){
+        if(o.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         Curso dbCurso = o.get();
@@ -76,6 +77,15 @@ public class CursoController extends CommonController<Curso, CursoService> {
     @GetMapping("/alumno/{id}")
     public ResponseEntity<?> buscarPorAlumnoId(@PathVariable Long id){
         Curso curso = service.findCursoByAlumnoId(id);
+        if(curso != null){
+            List<Long> examenesIds = (List<Long>) service.obtenerExamenesIdsConRespuestasAlumno(id);
+            List<Examen> examenes = curso.getExamenes().stream().peek(examen -> {
+                if(examenesIds.contains(examen.getId())){
+                    examen.setRespondido(true);
+                }
+            }).collect(Collectors.toList());
+            curso.setExamenes(examenes);
+        }
         return ResponseEntity.ok(curso);
     }
 }
