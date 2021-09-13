@@ -29,3 +29,16 @@ services:
       - ./data:/var/lib/postgres
     networks: 
       - app-tier
+
+  mongodb:
+    image : mongo
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: toor
+    ports:
+      - 27017:27017
+    volumes:
+      - /data:/var/lib/mongodb
+    networks: 
+      - app-tier

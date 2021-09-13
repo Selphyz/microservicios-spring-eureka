@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -23,6 +24,11 @@ public class AlumnoController extends CommonController<Alumno, AlumnoService> {
     @GetMapping("/filtrar/{term}")
     public ResponseEntity<?> filtrar(@PathVariable String term){
         return ResponseEntity.ok(service.findByNombreOrApellido(term));
+    }
+
+    @GetMapping("/alumnos-por-curso")
+    public ResponseEntity<?> obtenerAlumnosCursos(@RequestParam List<Long> ids){
+        return ResponseEntity.ok(service.findAllById(ids));
     }
 
     @GetMapping("/uploads/img/{id}")
